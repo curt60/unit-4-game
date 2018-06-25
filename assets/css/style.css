@@ -1,0 +1,111 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    color: white;
+    height: 100%;
+}
+
+body {
+    background-image: url("../images/background-3.png");
+    background-color: black;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed;
+    min-height: 100%;
+}
+
+header {
+    position: fixed;
+    color: white;
+    text-align: center;
+    font-size: 2rem;
+    font-weight: bold;
+    padding: 1rem 0;
+    width: 12rem;
+    top:0;
+    right: 10%;
+}
+
+header > img.logo {
+    width: 100%; 
+}
+
+main {
+    padding: 2rem;
+}
+
+.availableChars {
+    display: flex;
+    flex-wrap: wrap;
+    width: 40rem;
+}
+
+main .title {
+    color: #fff;
+    font-size: 2rem;
+    border-bottom: 1px solid #aaa;
+    margin-bottom: 2rem;
+}
+
+.character {
+    height: 6rem;
+    width: 6rem;
+    border: 1px solid white;
+    border-radius: 6rem;
+    overflow: hidden;
+    background-color: black;
+    box-shadow: .2rem .2rem 1.5rem #ddd;
+    transition: box-shadow .4s linear;
+    margin: 2rem;
+}
+
+.character:hover {
+    cursor: pointer;
+    box-shadow: .2rem .2rem 3rem #fff;
+
+}
+
+.character > img {
+    position: relative;
+    height: 100%;
+}
+
+#yoda > img {
+    left: .3rem;
+    top: .3rem;
+    height: 125%;
+}
+
+#rey > img {
+    bottom: .2rem;
+    height: 125%;
+}
+
+button {
+    background-color: red;
+    padding: .5rem 1rem;
+    border: none;
+    outline: none;
+    font-size: 1.5rem;
+    border-radius: .5rem;
+    box-shadow: .2rem .2rem 2rem #eee; 
+    transition-property: background-color, box-shadow;
+    transition-duration: .3s; 
+    transition-timing-function: linear;
+}
+
+button:hover {
+    box-shadow: .2rem .2rem 4rem #fff;   
+}
+
+button:active {
+    box-shadow: none;
+    background-color: #d00;
+}

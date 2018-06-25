@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="assets/css/reset.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <script src="assets/javascript/analytics.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <title>Star Wars RPG</title>
+</head>
+<body>
+    <header>
+        <img src="assets/images/logo-5.png" class="logo" alt="Star Wars Logo">
+        <div class="title">RPG</div>
+    </header>
+    <main>
+        <div class="availableChars">
+            <div class="title">Available Characters</div>
+            <div class="character" id="yoda"><img src="assets/images/chars-3.png" alt="yoda"></div>
+            <div class="character" id="rey"><img src="assets/images/chars-10.jpg" alt="rey"></div>
+            <div class="character" id="maul"><img src="assets/images/chars-11.jpg" alt="maul"></div>
+            <div class="character" id="leia"><img src="assets/images/chars-12.jpg" alt="leia"></div>
+            <div class="character" id="luke"><img src="assets/images/chars-13.jpg" alt="luke"></div>
+            <div class="character" id="vadar"><img src="assets/images/chars-14.jpg" alt="vadar"></div>
+        </div>
+        <div class="heroChar">
+            <div class="title">Your Chosen Hero</div>
+            <div class="points">100</div>
+        </div>
+        <div class="enemyChar">
+            <div class="title">Your Foe</div>
+            <div class="points">100</div>
+        </div>
+        <button class="attackBtn" onclick="attack()">Attack</button>
+    </main>
+    <script src="assets/javascript/game.js"></script>
+</body>
+</html>
