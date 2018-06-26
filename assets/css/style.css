@@ -27,20 +27,27 @@ body {
     margin: auto;
     max-width: 50rem;
     margin-bottom: 1rem;
-    min-height: 5rem;
-    align-items: flex-end;
+    min-height: 12rem;
+    align-items: flex-start;
 }
 
 .row.available-logo {
+    align-items: flex-end;
     justify-content: flex-end;
     flex-wrap: wrap-reverse;
 }
 
-.available {
+.available{
     display: flex;
     flex-flow: row wrap;
     flex: 1 0 23rem;
     margin-top: 3rem;
+}
+
+.heroChar, .enemyChar {
+    display: flex;
+    flex-flow: row wrap;
+    flex: 1 0 23rem;
 }
 
 .logo {
@@ -71,6 +78,14 @@ body {
     padding: 0 1rem;
 }
 
+.instructions {
+    margin-left: 2rem;
+}
+
+.enemyChar > .instructions {
+    display: none;
+}
+
 .character {
     height: 6rem;
     width: 6rem;
@@ -78,8 +93,9 @@ body {
     border-radius: 6rem;
     overflow: hidden;
     background-color: black;
+    opacity: 1;
     box-shadow: .2rem .2rem 1.5rem #ddd;
-    transition: box-shadow .4s linear;
+    transition: box-shadow .4s linear, opacity .8s linear, border .8s linear;
     margin: 1rem;
 }
 
