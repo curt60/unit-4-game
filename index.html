@@ -11,13 +11,9 @@
     <title>Star Wars RPG</title>
 </head>
 <body>
-    <header>
-        <img src="assets/images/logo-5.png" class="logo" alt="Star Wars Logo">
-        <div class="title">RPG</div>
-    </header>
-    <main>
-        <div class="availableChars">
-            <div class="title">Available Characters</div>
+    <div class="row available-logo">
+        <div class="available">
+            <div class="title"><span>Available Characters</span></div>
             <div class="character" id="yoda"><img src="assets/images/chars-3.png" alt="yoda"></div>
             <div class="character" id="rey"><img src="assets/images/chars-10.jpg" alt="rey"></div>
             <div class="character" id="maul"><img src="assets/images/chars-11.jpg" alt="maul"></div>
@@ -25,16 +21,24 @@
             <div class="character" id="luke"><img src="assets/images/chars-13.jpg" alt="luke"></div>
             <div class="character" id="vadar"><img src="assets/images/chars-14.jpg" alt="vadar"></div>
         </div>
+    <div class="logo">
+            <img src="assets/images/logo-5.png" alt="Star Wars Logo">
+            <div class="name">RPG</div>
+    </div>
+    </div>
+    <div class="row hero">
         <div class="heroChar">
-            <div class="title">Your Chosen Hero</div>
-            <div class="points">100</div>
+            <div class="title"><span>Your Chosen Hero</span></div>
         </div>
+    </div>
+    <div class="row hero">
         <div class="enemyChar">
-            <div class="title">Your Foe</div>
-            <div class="points">100</div>
+            <div class="title"><span>Your Foe</span></div>
         </div>
+    </div>
+    <div class="row">
         <button class="attackBtn" onclick="attack()">Attack</button>
-    </main>
+    </div>
     <script src="assets/javascript/game.js"></script>
 </body>
 </html>

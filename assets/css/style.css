@@ -21,37 +21,54 @@ body {
     min-height: 100%;
 }
 
-header {
-    position: fixed;
+.row {
+    display: flex;
+    flex-flow: row wrap;
+    margin: auto;
+    max-width: 50rem;
+    margin-bottom: 1rem;
+    min-height: 5rem;
+    align-items: flex-end;
+}
+
+.row.available-logo {
+    justify-content: flex-end;
+    flex-wrap: wrap-reverse;
+}
+
+.available {
+    display: flex;
+    flex-flow: row wrap;
+    flex: 1 0 23rem;
+    margin-top: 3rem;
+}
+
+.logo {
+    flex: 0 0 15rem;    
     color: white;
     text-align: center;
     font-size: 2rem;
     font-weight: bold;
-    padding: 1rem 0;
-    width: 12rem;
-    top:0;
-    right: 10%;
+    padding-right: 1rem;
 }
 
-header > img.logo {
+.logo > img {
     width: 100%; 
 }
 
-main {
-    padding: 2rem;
-}
-
-.availableChars {
-    display: flex;
-    flex-wrap: wrap;
-    width: 40rem;
-}
-
-main .title {
+.title {
     color: #fff;
     font-size: 2rem;
-    border-bottom: 1px solid #aaa;
-    margin-bottom: 2rem;
+    margin-bottom: 0rem;
+    padding: 1rem;
+    width: 100%;
+    min-width: 15rem;
+}
+
+.title > span {
+    border-bottom: 1px solid #ddd;
+    margin-right: auto;
+    padding: 0 1rem;
 }
 
 .character {
@@ -63,13 +80,16 @@ main .title {
     background-color: black;
     box-shadow: .2rem .2rem 1.5rem #ddd;
     transition: box-shadow .4s linear;
-    margin: 2rem;
+    margin: 1rem;
 }
 
 .character:hover {
     cursor: pointer;
-    box-shadow: .2rem .2rem 3rem #fff;
+    box-shadow: .2rem .2rem 3rem .5rem #fff;
+}
 
+.character:active {
+    box-shadow: none;
 }
 
 .character > img {
@@ -89,23 +109,24 @@ main .title {
 }
 
 button {
-    background-color: red;
+    background-color: #d00;
+    color: white;
     padding: .5rem 1rem;
     border: none;
     outline: none;
     font-size: 1.5rem;
     border-radius: .5rem;
-    box-shadow: .2rem .2rem 2rem #eee; 
+    box-shadow: .2rem .2rem 2rem rgba(256, 256, 256, .6); 
     transition-property: background-color, box-shadow;
     transition-duration: .3s; 
     transition-timing-function: linear;
+    margin-left: 2rem;
 }
 
 button:hover {
-    box-shadow: .2rem .2rem 4rem #fff;   
+    background-color: #f00;
 }
 
 button:active {
     box-shadow: none;
-    background-color: #d00;
 }
