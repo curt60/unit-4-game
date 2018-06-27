@@ -4,12 +4,14 @@
 var hero = ""; //currently selected hero
 var enemy = ""; //currently selected enemy
 var gameState = "new";
+var playTheme = true;
 var audioAttackSounds = [];
 var audioAttackIndex = 0;
 
 //create audio objects
 var audioGameTheme = new Sound("assets/audio/theme-1.mp3", .02);
 var audioBattleStart = new Sound("assets/audio/battle-start.wav", 1);
+var audioBattleEnd = new Sound("assets/audio/battle-end.mp3", 1);
 var audioGameOver = new Sound("assets/audio/game-over.mp3", 1);
 for (let i = 0; i < 12; i++) {
     audioAttackSounds[i] = new Sound("assets/audio/attack-" + i + ".wav", 1);
@@ -24,9 +26,12 @@ var leia = new Character("leia", 100, 20, 15, "assets/audio/leia.mp3");
 var rey = new Character("rey", 100, 20, 15, "assets/audio/rey.mp3");
 
 //event listeners for keyboard
-document.onkeyup = function(event) {
+document.onkeyup = function() {
     //start theme song after pressing any key (can't start before user interaction due to chrome policy)
-    audioGameTheme.play();
+    if (playTheme) {
+        audioGameTheme.play();
+        playTheme = false;
+    }
 }
 
 //event listeners for character clicks
@@ -71,6 +76,13 @@ $("button").click( function() {
     audioAttackIndex = Math.floor(Math.random() * 12);
     audioAttackSounds[audioAttackIndex].play();
     console.log("attack-" + audioAttackIndex + ".wav")
+    attack(hero, enemy);
+    if (window[hero].isDead()) {
+        gameOver("enemy");
+    }
+    else if (window[enemy].isDead()) {
+        removeEnemy();
+    }
 });
 
 
@@ -120,13 +132,13 @@ function Sound(src, vol) {
     }    
 }
 
-
 //character object constructor
 function Character(name, health, attack, counter, audioUrl) {
     this.name = name;
-    this.healthPoints = health;
-    this.attackPoints = attack;
-    this.counterPoints = counter;
+    this.health = health;
+    this.baseAttack = attack;
+    this.currentAttack = attack;
+    this.counterAttack = counter;
     //set character audio w/ volume 100%
     this.audioTheme = new Sound(audioUrl, 1);
     this.speak = function() {
@@ -134,8 +146,8 @@ function Character(name, health, attack, counter, audioUrl) {
     };
     //check if character died
     this.isDead = function() {
-        if (this.healthPoints < 0) true;
-        else false;
+        if (this.health < 0) return true;
+        else return false;
     };
     //character move sequence (with slow transition)
     this.move = function(destination) {
@@ -155,8 +167,37 @@ function Character(name, health, attack, counter, audioUrl) {
 function removeEnemy() {
     var parentElement = $(".enemyChar");
     var charElement = $("#" + enemy);
+    enemy = "";
     //add slow transition
     charElement[0].style.opacity = 0;
     setTimeout(function() {parentElement[0].removeChild(charElement[0])}, 800);
+    //display enemy selection instructions
+    setTimeout(function() {$(".enemyChar > .instructions")[0].style.display = "initial";}, 900);
+    setTimeout(function() {audioBattleEnd.play();}, 2000);
 }
 
+//calculate attack stats
+function attack(hero, enemy) {
+    window[enemy].health -= window[hero].currentAttack;
+    window[hero].currentAttack += window[hero].baseAttack;
+    window[hero].health -= window[enemy].counterAttack;
+    console.log("hero attack " + window[hero].currentAttack);
+    console.log("hero health " + window[hero].health);
+    console.log("enemy health " + window[enemy].health);
+}
+
+//game over sequence
+function gameOver(winner) {
+    if (winner === "hero") {
+        //do happy stuff
+        audioGameTheme.stop();
+        setTimeout(function() {audioGameOver.play();}, 3000);
+    }
+    else {
+        //do sad stuff
+        $("#" + hero)[0].style.backgroundColor = "red";
+        $("#" + hero + "> img")[0].style.opacity = .4;
+        audioGameTheme.stop();
+        setTimeout(function() {audioGameOver.play();}, 3000);
+    }
+}

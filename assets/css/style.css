@@ -95,7 +95,7 @@ body {
     background-color: black;
     opacity: 1;
     box-shadow: .2rem .2rem 1.5rem #ddd;
-    transition: box-shadow .4s linear, opacity .8s linear, border .8s linear;
+    transition: box-shadow .4s linear, opacity .8s linear, border .8s linear, background-color 2s ease;
     margin: 1rem;
 }
 
@@ -111,6 +111,8 @@ body {
 .character > img {
     position: relative;
     height: 100%;
+    opacity: 1;
+    transition: opacity 2s ease;
 }
 
 #yoda > img {
