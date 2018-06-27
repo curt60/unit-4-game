@@ -1,4 +1,9 @@
 //define single game object at the global scope that includes all custom vars and functions
+//wrap jQuery in ready function
+//create modal for Game Start and Game Over
+//add display for attack results
+//add victory/loss messages
+
 
 //define vars
 var hero = ""; //currently selected hero
@@ -18,12 +23,15 @@ for (let i = 0; i < 12; i++) {
 }
 
 //create character objects
-var yoda = new Character("yoda", 100, 20, 15, "assets/audio/yoda.mp3");
+var kylo = new Character("kylo", 200, 20, 15, "assets/audio/kylo.mp3");
 var vadar = new Character("vadar", 100, 20, 15, "assets/audio/vadar.mp3");
 var maul = new Character("maul", 100, 20, 15, "assets/audio/maul.wav");
 var luke = new Character("luke", 100, 20, 15, "assets/audio/luke.mp3");
 var leia = new Character("leia", 100, 20, 15, "assets/audio/leia.mp3");
-var rey = new Character("rey", 100, 20, 15, "assets/audio/rey.mp3");
+var rey = new Character("rey", 50, 10, 15, "assets/audio/rey.mp3");
+
+//display character HP stats
+displayHP();
 
 //event listeners for keyboard
 document.onkeyup = function() {
@@ -44,7 +52,9 @@ $(".character").click(function() {
         window[this.id].move(".heroChar");
         //display enemy selection instructions
         $(".enemyChar > .instructions")[0].style.display = "initial";
-        //change border of all characters
+        //change title of available characters (to available enemies)
+        $(".available > .title > span").html("Available Enemies");
+        //change border of all characters (red = enemy, blue = hero)
         let charElements = $(".character")
         for (i = 0; i < charElements.length; i++) {
             if (charElements[i].id === hero) {
@@ -69,51 +79,30 @@ $(".character").click(function() {
 
 //event listener for attach button
 $("button").click( function() {
+    //disable attack button if hero or enemy missing/dead 
+    if (!enemy || !hero || window[hero].isDead()) return;
     //stop current sound if stil playing
     audioAttackSounds[audioAttackIndex].stop();
     audioAttackSounds[audioAttackIndex].sound.currentTime = 0;
     //play new random attack sound
     audioAttackIndex = Math.floor(Math.random() * 12);
     audioAttackSounds[audioAttackIndex].play();
-    console.log("attack-" + audioAttackIndex + ".wav")
+    //perform attack and deduct HP
     attack(hero, enemy);
+    //update HP stats
+    displayHP();
+    //determine if character is dead and act accordingly
     if (window[hero].isDead()) {
         gameOver("enemy");
     }
     else if (window[enemy].isDead()) {
         removeEnemy();
+        //determine if all enemies dead
+        if ($(".available > .character").length < 1) {
+            gameOver("hero");
+        }
     }
 });
-
-
-//display starting instructions
-    //"press any key to begin"
-
-//keyboard input
-    //play theme song
-    //remove initial instruction dialog
-
-//on character click:
-    //if !hero
-        //select hero
-            //display stats
-    //else if !enemy
-        //select enemy
-            //display stats
-
-//on attack click
-    //calculate damage for both chars
-    //update stats
-    //if hero dead
-        //game over sequence
-    //if enemy dead
-        //remove character
-        //play: turn off saber
-        //reset enemy var
-        //add instructions for selecting next enemy
-
-    
-
 
 //sound object constructor (I didn't realize that a built-in constructor exists)
 function Sound(src, vol) {
@@ -142,11 +131,17 @@ function Character(name, health, attack, counter, audioUrl) {
     //set character audio w/ volume 100%
     this.audioTheme = new Sound(audioUrl, 1);
     this.speak = function() {
-        this.audioTheme.play();
+        //only speak if alive
+        if (this.health > 0) {
+            this.audioTheme.play();
+        }
+    };
+    this.quiet = function() {
+        this.audioTheme.stop();
     };
     //check if character died
     this.isDead = function() {
-        if (this.health < 0) return true;
+        if (this.health <= 0) return true;
         else return false;
     };
     //character move sequence (with slow transition)
@@ -167,37 +162,91 @@ function Character(name, health, attack, counter, audioUrl) {
 function removeEnemy() {
     var parentElement = $(".enemyChar");
     var charElement = $("#" + enemy);
+    //stop talking
+    window[enemy].quiet();
+    //reset enemy var    
     enemy = "";
     //add slow transition
     charElement[0].style.opacity = 0;
     setTimeout(function() {parentElement[0].removeChild(charElement[0])}, 800);
-    //display enemy selection instructions
-    setTimeout(function() {$(".enemyChar > .instructions")[0].style.display = "initial";}, 900);
+    //display enemy selection instructions if other enemies remaining
+    if ($(".available > .character").length >= 1) {
+        //-----------------------------------
+        //display 'You defeated [enemy name]!'
+        //-----------------------------------
+        setTimeout(function() {$(".enemyChar > .instructions")[0].style.display = "initial";}, 900);        
+    }
+    //play saber close sound to indicate end of battle
     setTimeout(function() {audioBattleEnd.play();}, 2000);
 }
 
 //calculate attack stats
 function attack(hero, enemy) {
+    //damage enemy
     window[enemy].health -= window[hero].currentAttack;
+    //------------------------------
+    //display 'Enemy took XX damage'
+    //------------------------------
+    //increase attack value (applied to future attacks)
     window[hero].currentAttack += window[hero].baseAttack;
-    window[hero].health -= window[enemy].counterAttack;
+    //take counter attack only if enemy still alive
+    if (window[enemy].health > 0) {
+        window[hero].health -= window[enemy].counterAttack;
+        //------------------------------
+        //display 'You took XX damage'
+        //------------------------------
+    }
     console.log("hero attack " + window[hero].currentAttack);
-    console.log("hero health " + window[hero].health);
-    console.log("enemy health " + window[enemy].health);
+    console.log("enemy counter " + window[enemy].counterAttack);
 }
 
 //game over sequence
 function gameOver(winner) {
+    //save hero elements as vars (for cleaner code)
+    var heroElement = $("#" + hero)[0];
+    var heroImage = $("#" + hero + "> img")[0];
+    
     if (winner === "hero") {
         //do happy stuff
+        //makde hero sparkle
+        heroElement.style.animationName = "characterSparkle";
+        heroElement.style.animationDuration = "1.5s";
+        heroElement.style.animationDirection = "alternate";
+        heroElement.style.animationTimingFunction = "linear";
+        heroElement.style.animationIterationCount = "infinite";
+        //------------------
+        //display 'You Won!'
+        //------------------
+        //stop main theme song and play game over song
         audioGameTheme.stop();
         setTimeout(function() {audioGameOver.play();}, 3000);
     }
     else {
         //do sad stuff
-        $("#" + hero)[0].style.backgroundColor = "red";
-        $("#" + hero + "> img")[0].style.opacity = .4;
+        //turn hero red
+        heroElement.style.backgroundColor = "red";
+        heroImage.style.animationName = "characterPulse";
+        heroImage.style.animationDuration = "1.5s";
+        heroImage.style.animationDirection = "alternate";
+        heroImage.style.animationTimingFunction = "linear";
+        heroImage.style.animationIterationCount = "infinite";
+        //----------------------------
+        //display 'You were defeated!'
+        //----------------------------
+        //stop main theme song and play game over song
         audioGameTheme.stop();
         setTimeout(function() {audioGameOver.play();}, 3000);
+    }
+}
+
+//display latest HP stats for all characters
+function displayHP() {
+    var statElements = $(".character > .stat-hp");
+    var char = "";
+    for (let i = 0; i < statElements.length; i++) {
+        //determine character name from parent node ID
+        char = statElements[i].parentElement.id;
+        //update HP stat from character object
+        statElements[i].innerHTML = window[char].health;
     }
 }

@@ -87,6 +87,7 @@ body {
 }
 
 .character {
+    position: relative;
     height: 6rem;
     width: 6rem;
     border: 1px solid white;
@@ -97,6 +98,17 @@ body {
     box-shadow: .2rem .2rem 1.5rem #ddd;
     transition: box-shadow .4s linear, opacity .8s linear, border .8s linear, background-color 2s ease;
     margin: 1rem;
+}
+
+
+@keyframes characterSparkle {
+    from {box-shadow: .2rem .2rem 1.5rem #ddd;}
+    to {box-shadow: .2rem .2rem 5rem 1rem #fff;}
+}
+
+@keyframes characterPulse {
+    from {opacity: .8}
+    to {opacity: .6}
 }
 
 .character:hover {
@@ -115,15 +127,13 @@ body {
     transition: opacity 2s ease;
 }
 
-#yoda > img {
-    left: .3rem;
-    top: .3rem;
-    height: 125%;
-}
-
-#rey > img {
-    bottom: .2rem;
-    height: 125%;
+.character > .stat-hp {
+    position: absolute;
+    bottom: .5rem;
+    font-size: .9rem;
+    font-weight: bold;
+    width: 100%;
+    text-align: center;
 }
 
 button {
